@@ -28,3 +28,6 @@ If you want, throw bitcoins at 13wUj3ZMut6uJAZKgZ4jCGz6tfqRvUzRgj and I will spe
 * Refactoring and stuff (maybe even PEP-8 compliance!!!)
 * Replace requests stuff with stdlib only for fun
 * pip-compatible setuputils setup.py stuff
+
+## Bugs
+[Use the github issue tracker please :)](https://github.com/0x27/imgurup/issues)
