@@ -1,5 +1,9 @@
 #!/usr/bin/python2
 # coding: utf-8
+# Author: David Davidson 
+# Twitter: @dailydavedavids
+# Licence: WTFPL
+# Version: 20150731.1
 import requests
 import base64
 import json
