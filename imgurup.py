@@ -4,6 +4,7 @@
 # Twitter: @dailydavedavids
 # Licence: WTFPL
 # Version: 20150731.1
+from __future__ import print_function, unicode_literals
 import requests
 import base64
 import json
@@ -17,19 +18,19 @@ def upload(image_path, client_id):
         sys.exit("{!} That file does not exist!") # for now, just bail
     b64image = base64.standard_b64encode(f.read()) # base64 encode the image data
     headers = {'Authorization': 'Client-ID '+client_id} # set the client id in auth header
-    data = {'image': b64image, 'title': '%s' %(os.path.basename(image_path))} # make post data
+    data = {'image': b64image, 'title': '{}'.format(os.path.basename(image_path))} # make post data
     try:
         r = requests.post(url="https://api.imgur.com/3/upload.json", data=data, headers=headers) # send request
-    except Exception, e: # catch the exception if something goes wrong
-        print "{-} Image Upload Failed. Printing stack trace and exiting..." # bail.
+    except Exception as e: # catch the exception if something goes wrong
+        print("{-} Image Upload Failed. Printing stack trace and exiting...") # bail.
         sys.exit(str(e)) # print the stacktrace. Later, I should figure out what kind of exceptions happen and handle them and log them
     lol = json.loads(r.text) # get the json...
-    print lol['data']['link'] # print the link
+    print(lol['data']['link']) # print the link
 
 def main(args):
     # some of the logic in here is a bit backwards. I should probably fix this to make it more nice
     if len(args) != 2: # only 2 args needed
-        sys.exit("use: %s /path/to/image/file.ext" %(args[0])) # exit with usage 
+        sys.exit("use: {} /path/to/image/file.ext".format(args[0])) # exit with usage
     else:
        pass # we can continue
     client_id_env_var = 'IMGUR_CLIENT_ID' 
