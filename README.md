@@ -10,11 +10,13 @@ Get an API key from [api.imgur.com](https://api.imgur.com) and set the environme
 to accounts just yet.
 
 ## Requirements
-imgurup requires only standard python2 libraries, with the exception of the [requests](https://pypi.python.org/pypi/requests) module, as I was not arsed using urllib for the HTTP stuff.  
+imgurup requires only standard python2 libraries, with the exception of the [requests](https://pypi.python.org/pypi/requests) module, as I was not arsed using urllib for the HTTP stuff initially.  
 To install requests:
 ```
 $ pip install requests
 ```
+
+If you REALLY don't want to use requests, I provided a stdlib only version using urllib as "imgurup-stdlib.py", written while sitting in the pub :)
 
 ## Licence
 Licenced under the [WTFPL](http://www.wtfpl.net/).
@@ -26,7 +28,7 @@ If you want, throw bitcoins at 13wUj3ZMut6uJAZKgZ4jCGz6tfqRvUzRgj and I will spe
 * Multiple image upload (album creation)
 * Tying it to imgur account
 * Refactoring and stuff (maybe even PEP-8 compliance!!!)
-* Replace requests stuff with stdlib only for fun
+* Replace requests stuff with stdlib only for fun [done - see imgurup-stdlib]
 * pip-compatible setuputils setup.py stuff
 
 ## Bugs
