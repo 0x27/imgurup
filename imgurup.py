@@ -61,7 +61,8 @@ def upload_album(directory, client_id):
     # removing trailing comma
     images = images[:-1]
     data = {'ids': images,
-            'title': '{}'.format(directory)}
+            'title': '{}'.format(
+                os.path.basename(os.path.normpath(directory)))}
     try:
         r = requests.post(url='https://api.imgur.com/3/album.json',
                           data=data, headers=headers)
