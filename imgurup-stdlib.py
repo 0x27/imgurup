@@ -39,14 +39,46 @@ def upload(image_path, client_id):
         sys.exit(str(e))
     lol = json.loads(response)  # get the json...
     print lol['data']['link']  # print the link
+    return lol['data']
+
+
+def upload_album(directory, client_id):
+    if not os.path.isdir(directory):
+        sys.exit('{!} "%s" does not exist. '
+                 'Please enter an existing directory' % directory)
+    extensions = ['.png', '.jpg', '.gif', '.bmp', '.tif', '.jpeg']
+    images = ''
+    # directory path without the trailing '/' is still a valid path, accept it
+    if not directory.endswith('/'):
+        directory += '/'
+
+    for dir_file in os.listdir(directory):
+        # only get images
+        if any(dir_file.endswith(extension) for extension in extensions):
+            # ids must be delineated with commas in order to send to album api
+            images += upload(directory + dir_file, client_id)['id'] + ','
+    headers = {'Authorization': 'Client-ID ' + client_id}
+    # removing trailing comma
+    images = images[:-1]
+    data = {'ids': images,
+            'title': directory}
+    try:
+        r = urllib2.Request(url='https://api.imgur.com/3/album.json',
+                            data=urllib.urlencode(data), headers=headers)
+        response = urllib2.urlopen(r).read()
+    except Exception, e:
+        print('{-} Album upload failed.')
+        sys.exit(str(e))
+    result = json.loads(response)
+    print('Album link:\nhttp://i.imgur.com/a/' + result['data']['id'])
 
 
 def main(args):
     # some of the logic in here is a bit backwards.
     # I should probably fix this to make it more nice
-    if len(args) != 2:  # only 2 args needed
+    if len(args) != 3:  # only 2 args needed
         # exit with usage
-        sys.exit("use: %s /path/to/image/file.ext" % (args[0]))
+        sys.exit("use: %s /path/to/image/file.ext -i/-a" % (args[0]))
     else:
         pass  # we can continue
     client_id_env_var = 'IMGUR_CLIENT_ID'
@@ -55,7 +87,14 @@ def main(args):
     else:
         sys.exit("{!} Set environmental variable IMGUR_CLIENT_ID "
                  "to your client_id :)")
-    upload(image_path=args[1], client_id=client_id)
+    if args[2] == '-i':
+        upload(image_path=args[1], client_id=client_id)
+    elif args[2] == '-a':
+        upload_album(args[1], client_id=client_id)
+    else:
+        print('Error: Invalid argument "%s" \n'
+              'Use "-i" to upload an image or '
+              '"-a" to upload the given directory to an album' % args[2])
 
 
 if __name__ == "__main__":
